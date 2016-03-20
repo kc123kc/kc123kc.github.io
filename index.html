@@ -57,15 +57,15 @@
 
 
 
-<meta name="description" content="我是程序猿">
+<meta name="description" content="这家伙真的好懒好懒，什么也没留下">
 <meta property="og:type" content="website">
 <meta property="og:title" content="KC的小站">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="KC的小站">
-<meta property="og:description" content="我是程序猿">
+<meta property="og:description" content="这家伙真的好懒好懒，什么也没留下">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KC的小站">
-<meta name="twitter:description" content="我是程序猿">
+<meta name="twitter:description" content="这家伙真的好懒好懒，什么也没留下">
 
 
 
@@ -267,7 +267,7 @@
             <p>#前言<br>最近看了下这方面的资料，顺便也做个整理记录，就先以用得较广泛的ETC1纹理压缩开个头，着重讲下是如何把ETC数据还原成RGB图像数据。<br>主要是基于这篇<a href="https://www.khronos.org/registry/gles/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt" target="_blank" rel="external">资料</a>的翻译和理解，如有错漏之处，敬请斧正。</p>
 <p>#介绍</p>
 <blockquote>
-<p><strong>Ericsson Texture Compression (ETC)</strong>是由 Khronos 支持的开放标准，在移动平台中广泛采用。它是一种为感知质量设计的有损算法，其依据是人眼对亮度改变的反应要高于色度改变。对于24位的RGB数据，提供6倍的压缩率。<strong>最大的弊端是不支持Alpha通道的存储</strong>，不过在后续的ETC2中也得到了支持。 <a href="https://en.wikipedia.org/wiki/Ericsson_Texture_Compression" target="_blank" rel="external">维基百科链接</a></p>
+<p><strong>Ericsson Texture Compression (ETC)</strong>是由 Khronos 支持的开放标准，在移动平台中广泛采用。它是一种为感知质量设计的<strong>有损算法</strong>，其依据是人眼对亮度改变的反应要高于色度改变。对于24位的RGB数据，提供6倍的压缩率。<strong>最大的弊端是不支持Alpha通道的存储</strong>，不过在后续的ETC2中也得到了支持。 <a href="https://en.wikipedia.org/wiki/Ericsson_Texture_Compression" target="_blank" rel="external">维基百科</a></p>
 </blockquote>
 <p>#原理<br>ETC的压缩纹理以4x4的像素块为单位的方式描述出来。如果纹理在任意方向小于4个像素，那么只有位于左上角的像素块才是可用的。</p>
 <pre><code>    单个像素块
@@ -332,7 +332,7 @@
 | B1 (4bits)| B2 (4bits)| cw 1   | cw 2   |bit |bit |
  ---------------------------------------------------
 
- 32bit到63bit，当 diffbit = 0时的布局
+ 32bit到63bit，当 diffbit = 1时的布局
 
  63 62 61 60 59 58 57 56 55 54 53 52 51 50 49 48 
  -----------------------------------------------
@@ -1442,7 +1442,7 @@
                src="https://avatars1.githubusercontent.com/u/32269?v=3&s=460"
                alt="KC" />
           <p class="site-author-name" itemprop="name">KC</p>
-          <p class="site-description motion-element" itemprop="description">我是程序猿</p>
+          <p class="site-description motion-element" itemprop="description">这家伙真的好懒好懒，什么也没留下</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">

@@ -1,0 +1,910 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="#前言最近看了下这方面的资料，顺便也做个整理记录，就先以用得较广泛的ETC1纹理压缩开个头，着重讲下是如何把ETC数据还原成RGB图像数据。主要是基于这篇资料的翻译和理解，如有错漏之处，敬请斧正。
+#介绍
+
+Ericsson Texture Compression (ETC)是由 Khronos 支持的开放标准，在移动平台中广泛采用。它是一种为感知质量设计的有损算法，其依据是人眼对亮度改变的反应要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ETC1纹理压缩原理">
+<meta property="og:url" content="http://yoursite.com/2016/03/20/ETC1-Introduce/index.html">
+<meta property="og:site_name" content="KC的小站">
+<meta property="og:description" content="#前言最近看了下这方面的资料，顺便也做个整理记录，就先以用得较广泛的ETC1纹理压缩开个头，着重讲下是如何把ETC数据还原成RGB图像数据。主要是基于这篇资料的翻译和理解，如有错漏之处，敬请斧正。
+#介绍
+
+Ericsson Texture Compression (ETC)是由 Khronos 支持的开放标准，在移动平台中广泛采用。它是一种为感知质量设计的有损算法，其依据是人眼对亮度改变的反应要">
+<meta property="og:updated_time" content="2016-03-20T08:20:09.364Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ETC1纹理压缩原理">
+<meta name="twitter:description" content="#前言最近看了下这方面的资料，顺便也做个整理记录，就先以用得较广泛的ETC1纹理压缩开个头，着重讲下是如何把ETC数据还原成RGB图像数据。主要是基于这篇资料的翻译和理解，如有错漏之处，敬请斧正。
+#介绍
+
+Ericsson Texture Compression (ETC)是由 Khronos 支持的开放标准，在移动平台中广泛采用。它是一种为感知质量设计的有损算法，其依据是人眼对亮度改变的反应要">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: "post",
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> ETC1纹理压缩原理 | KC的小站 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?8f81412bb9bd1b853c541a36f8b8ba98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+
+  <div class="container one-collumn  page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KC的小站</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ETC1纹理压缩原理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-20T16:19:25+08:00" content="2016-03-20">
+              2016-03-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/20/ETC1-Introduce/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/20/ETC1-Introduce/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#前言<br>最近看了下这方面的资料，顺便也做个整理记录，就先以用得较广泛的ETC1纹理压缩开个头，着重讲下是如何把ETC数据还原成RGB图像数据。<br>主要是基于这篇<a href="https://www.khronos.org/registry/gles/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt" target="_blank" rel="external">资料</a>的翻译和理解，如有错漏之处，敬请斧正。</p>
+<p>#介绍</p>
+<blockquote>
+<p><strong>Ericsson Texture Compression (ETC)</strong>是由 Khronos 支持的开放标准，在移动平台中广泛采用。它是一种为感知质量设计的有损算法，其依据是人眼对亮度改变的反应要高于色度改变。对于24位的RGB数据，提供6倍的压缩率。<strong>最大的弊端是不支持Alpha通道的存储</strong>，不过在后续的ETC2中也得到了支持。 <a href="https://en.wikipedia.org/wiki/Ericsson_Texture_Compression" target="_blank" rel="external">维基百科链接</a></p>
+</blockquote>
+<p>#原理<br>ETC的压缩纹理以4x4的像素块为单位的方式描述出来。如果纹理在任意方向小于4个像素，那么只有位于左上角的像素块才是可用的。</p>
+<pre><code>    单个像素块
+ ---- ---- ---- ---- 
+|a   |e   |i   |m   |
+|    |    |    |    |
+ ---- ---- ---- ---- 
+|b   |f   |j   |n   |
+|    |    |    |    |
+ ---- ---- ---- ---- 
+|c   |g   |k   |o   |
+|    |    |    |    |
+ ---- ---- ---- ---- 
+|d   |h   |l   |p   |
+|    |    |    |    |
+ ---- ---- ---- ---- 
+</code></pre><p><strong>一个4x4的像素块的数据用64bit的数据来表示。</strong>4x4的块被分成两个子块，垂直分（2x4）或者水平分（4x2），每一个子块有一组基础颜色（分别是RGB444/RGB444或RGB555/RGB333格式）、亮度索引、像素索引。<br><strong>每个像素的颜色等于所属子块基础颜色加上索引指向的亮度修正。</strong></p>
+<pre><code>        垂直分块
+
+ 子块 1     子块 2
+ ---- ---- ---- ----
+|a    e   |i    m   |
+|         |         |
+|         |         |
+|b    f   |j    n   |
+|         |         |
+|         |         |
+|c    g   |k    o   |
+|         |         |
+|         |         |
+|d    h   |l    p   |
+|         |         |
+ ---- ---- ---- ----
+
+        水平分块
+
+ ---- ---- ---- ----
+|a    e    i    m   |
+|                   |
+|                   | 子块 1
+|b    f    j    n   |
+|                   |
+ -------------------
+|c    g    k    o   |
+|                   |
+|                   | 子块 2
+|d    h    l    p   |
+|                   |
+ ---- ---- ---- ----
+</code></pre><p>下面讲下这64bit的数据是存放和使用的</p>
+<h2 id="子块基础颜色计算"><a href="#子块基础颜色计算" class="headerlink" title="子块基础颜色计算"></a>子块基础颜色计算</h2><p>2个子块的<strong>基础颜色根据32-63bit的数据而决定</strong>。ETC1里有两种模式：<strong>individual模式</strong>和<strong>differential模式</strong>。<br>这两种模式决定了子块存储的颜色是以RGB444/RGB444（individual模式）还是RGB555/RGB333（differential模式）格式存储颜色的数据，<strong>由bit 33（称为 diffbit）的值来决定，值为0时是individual模式，为1时是differential模式。</strong></p>
+<pre><code> 32bit到63bit，当 diffbit = 0时的布局
+
+ 63 62 61 60 59 58 57 56 55 54 53 52 51 50 49 48
+ -----------------------------------------------
+| base col1 | base col2 | base col1 | base col2 |
+| R1 (4bits)| R2 (4bits)| G1 (4bits)| G2 (4bits)|
+ -----------------------------------------------
+ 47 46 45 44 43 42 41 40 39 38 37 36 35 34  33  32
+ ---------------------------------------------------
+| base col1 | base col2 | table  | table  |diff|flip|
+| B1 (4bits)| B2 (4bits)| cw 1   | cw 2   |bit |bit |
+ ---------------------------------------------------
+
+ 32bit到63bit，当 diffbit = 0时的布局
+
+ 63 62 61 60 59 58 57 56 55 54 53 52 51 50 49 48 
+ -----------------------------------------------
+| base col1    | dcol 2 | base col1    | dcol 2 |
+| R1&apos; (5 bits) | dR2    | G1&apos; (5 bits) | dG2    |
+ -----------------------------------------------
+
+ 47 46 45 44 43 42 41 40 39 38 37 36 35 34  33  32 
+ ---------------------------------------------------
+| base col 1   | dcol 2 | table  | table  |diff|flip|
+| B1&apos; (5 bits) | dB2    | cw 1   | cw 2   |bit |bit |
+ ---------------------------------------------------
+</code></pre><ul>
+<li>Individual模式<br><strong>每个子块以RGB444/RGB444方式存储，将4bit颜色扩充为8bit，高4位和低4位相同</strong><br>举例：子块1存储的RGB数据是R1=14=1110b，G1=3=0011b，B1=8=1000b<br>那么还原后的子块1基础RGB为R1=11101110b=238，G1=00110011b=51，B1=10001000b=136<br>子块2同理<blockquote>
+<p>   base col subblock1 = extend_4to8bits(R1, G1, B1)<br>  base col subblock2 = extend_4to8bits(R2, G2, B2) </p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>Differential模式<br><strong>子块1以RGB555，子块2以RGB333方式存储,子块1的颜色是以5bit的高3位作为扩充为8位之后的低3位</strong><br>举例：子块1存储的RGB数据是R1=28=11100b，G1=4=00100b，B1=3=00011b<br>那么还原后的子块1基础RGB为R1=11100111b=231，G1=00100001b=33，B1=00011000b=24<br><strong>子块2计算时，先要通过和子块1存储的RGB叠加。把RGB333转为RGB555，然后再转为RGB888</strong><br>原有RGB333可看作是带符号位的，所以取值范围是[-4, 3]<br>举例：和上面一样有R1’=28，的dR2=100b=-4，R1’+dR2=24=11000b，转成8bit则为，R2=11000110=198，G2B2同理<blockquote>
+<p>   base col subblock1 = extend_5to8bits(R1’, G1’, B1’)<br>  base col subblock2 = extend_5to8bits(R1’+dR2, G1’+dG2, B1’+dG2)</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="分块方式"><a href="#分块方式" class="headerlink" title="分块方式"></a>分块方式</h2><p><strong>分块方式根据bit 32来决定（称为flipbit），flipbit=0为垂直分（2x4），flipbit=1为水平分（4x2）。</strong></p>
+<h2 id="像素RGB的最终确定"><a href="#像素RGB的最终确定" class="headerlink" title="像素RGB的最终确定"></a>像素RGB的最终确定</h2><p>通过上面的步骤可以得出两个分块的基础颜色，然后需要确定每个像素的修正值，和基础颜色进行叠加，最后限定在[0, 255]内。</p>
+<ul>
+<li>亮度修正表<br>亮度修正表定义了8组修正的值（固定不变的），每组包含4个值，具体的像素采用哪个修正值还需要通过修正结果映射表（下面会说到）来决定。<br>继续引用上面表格，37bit到39bit这3bit存储的是子块1的<strong>亮度修正表索引</strong>，34bit到36bit是存了子块2的亮度修正表索引。<br>举例：37bit到39bit的值为010b=2，则得到修正值为{-17,-5,5,17}</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">codewords</th>
+<th style="text-align:center">modifier value1</th>
+<th style="text-align:center">modifier value2</th>
+<th style="text-align:center">modifier value3</th>
+<th style="text-align:center">modifier value4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-8</td>
+<td style="text-align:center">-2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-17</td>
+<td style="text-align:center">-5</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">17</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">-29</td>
+<td style="text-align:center">-9</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">29</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">-42</td>
+<td style="text-align:center">-13</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">42</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">-60</td>
+<td style="text-align:center">-18</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">60</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">-80</td>
+<td style="text-align:center">-24</td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">80</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">-106</td>
+<td style="text-align:center">-33</td>
+<td style="text-align:center">33</td>
+<td style="text-align:center">106</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">-183</td>
+<td style="text-align:center">-47</td>
+<td style="text-align:center">47</td>
+<td style="text-align:center">183</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>修正结果映射表<br>0bit到31bit之间是记录4x4个像素采用的索引值，每个像素由2bit（msb和lsb）决定。<br>0-15bit之间的值为lsb(least significant bit)，16-31bit之间的值为msb(most significant bit)，第一个像素对应0bit和16bit，第二个像素对应1bit和17bit…如此类推。<br><strong>msb和lsb可以称为像素下标位。</strong><br>上面已经根据亮度索引从亮度修正表里面得出了四个值，现在可以通过得到的msb和lsb，在修正结果映射表里面得到一个最终的修正值。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">msb</th>
+<th style="text-align:center">lsb</th>
+<th style="text-align:center">最后的修正值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">modifier value1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">modifier value2</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">modifier value3</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">modifier value4</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>最终结果计算举例</strong><br>算出像素所在子块的基础色为(231, 8, 16)，亮度修正索引为010b=2，对应值为{-29, -9, 9, 29}，像素下标位为01b=1，所以取得修正值为29，叠加后得到(260, 37, 45)，修正在[0, 255]，所以最终结果是(255, 37, 45)</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/17/the-source-of-depression/" rel="next" title="压抑的来源">
+                <i class="fa fa-chevron-left"></i> 压抑的来源
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/20/ETC1-Introduce/"
+           data-title="ETC1纹理压缩原理" data-url="http://yoursite.com/2016/03/20/ETC1-Introduce/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/32269?v=3&s=460"
+               alt="KC" />
+          <p class="site-author-name" itemprop="name">KC</p>
+          <p class="site-description motion-element" itemprop="description">我是程序猿</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#子块基础颜色计算"><span class="nav-number">1.</span> <span class="nav-text">子块基础颜色计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分块方式"><span class="nav-number">2.</span> <span class="nav-text">分块方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#像素RGB的最终确定"><span class="nav-number">3.</span> <span class="nav-text">像素RGB的最终确定</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KC</span>
+</div>
+
+<!-- KC Del 2015.12.29 -->
+<!-- 
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+-->
+
+<div class="Addition">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.4.5.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.4.5.2"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.4.5.2"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.4.5.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kc123kc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>

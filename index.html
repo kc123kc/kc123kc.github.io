@@ -351,7 +351,7 @@
 </li>
 </ul>
 <ul>
-<li>Differential模式<br><strong>子块1以RGB555，子块2以RGB333方式存储,子块1的颜色是以5bit的高3位作为扩充为8位之后的低3位</strong><br>举例：子块1存储的RGB数据是R1=28=11100b，G1=4=00100b，B1=3=00011b<br>那么还原后的子块1基础RGB为R1=11100111b=231，G1=00100001b=33，B1=00011000b=24<br><strong>子块2计算时，先要通过和子块1存储的RGB叠加。把RGB333转为RGB555，然后再转为RGB888</strong><br>原有RGB333可看作是带符号位的，所以取值范围是[-4, 3]<br>举例：和上面一样有R1’=28，的dR2=100b=-4，R1’+dR2=24=11000b，转成8bit则为，R2=11000110=198，G2B2同理<blockquote>
+<li>Differential模式<br><strong>子块1以RGB555，子块2以RGB333方式存储,子块1的颜色是以5bit的高3位作为扩充为8位之后的低3位</strong><br>举例：子块1存储的RGB数据是R1=28=11100b，G1=4=00100b，B1=3=00011b<br>那么还原后的子块1基础RGB为R1=11100111b=231，G1=00100001b=33，B1=00011000b=24<br><strong>子块2计算时，先要通过和子块1存储的RGB叠加。把RGB333转为RGB555，然后再扩充为RGB888</strong><br>原有RGB333可看作是带符号位的，所以取值范围是[-4, 3]<br>举例：和上面一样有R1’=28，的dR2=100b=-4，R1’+dR2=24=11000b，转成8bit则为，R2=11000110=198，G2B2同理<blockquote>
 <p>   base col subblock1 = extend_5to8bits(R1’, G1’, B1’)<br>  base col subblock2 = extend_5to8bits(R1’+dR2, G1’+dG2, B1’+dG2)</p>
 </blockquote>
 </li>

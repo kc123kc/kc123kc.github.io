@@ -264,12 +264,11 @@
       
         
           
-            <p>#前言<br>最近看了下这方面的资料，顺便也做个整理记录，就先以用得较广泛的ETC1纹理压缩开个头，着重讲下是如何把ETC数据还原成RGB图像数据。<br>主要是基于这篇<a href="https://www.khronos.org/registry/gles/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt" target="_blank" rel="external">资料</a>的翻译和理解，如有错漏之处，敬请斧正。</p>
-<p>#介绍</p>
-<blockquote>
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近看了下这方面的资料，顺便也做个整理记录，就先以用得较广泛的ETC1纹理压缩开个头，着重讲下是如何把ETC数据还原成RGB图像数据。<br>主要是基于这篇<a href="https://www.khronos.org/registry/gles/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt" target="_blank" rel="external">资料</a>的翻译和理解，如有错漏之处，敬请斧正。</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><blockquote>
 <p><strong>Ericsson Texture Compression (ETC)</strong>是由 Khronos 支持的开放标准，在移动平台中广泛采用。它是一种为感知质量设计的<strong>有损算法</strong>，其依据是人眼对亮度改变的反应要高于色度改变。对于24位的RGB数据，提供6倍的压缩率。<strong>最大的弊端是不支持Alpha通道的存储</strong>，不过在后续的ETC2中也得到了支持。 <a href="https://en.wikipedia.org/wiki/Ericsson_Texture_Compression" target="_blank" rel="external">维基百科</a></p>
 </blockquote>
-<p>#原理<br>ETC的压缩纹理以4x4的像素块为单位的方式描述出来。如果纹理在任意方向小于4个像素，那么只有位于左上角的像素块才是可用的。</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>ETC的压缩纹理以4x4的像素块为单位的方式描述出来。如果纹理在任意方向小于4个像素，那么只有位于左上角的像素块才是可用的。</p>
 <pre><code>    单个像素块
  ---- ---- ---- ---- 
 |a   |e   |i   |m   |

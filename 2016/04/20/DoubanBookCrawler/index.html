@@ -57,33 +57,32 @@
 
 
 
-<meta name="description" content="MSYS2是什么
-MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于shell 命令行开发环境。 同时它也是一个在Cygwin （POSIX 兼容性层） 和MinGW-w64（从”MinGW-生成”）基础上产生的，追求更好的互操作性的Windows 软件。
-
-
-中文乱码问题在默认安装完后，会存在中文乱码的问题，通过下面提到的方法可以解决。
-1. 设置字符编码点">
+<meta name="description" content="前言最近把豆瓣图书上热门标签的书爬了一遍，大概有五六万本，整理成了Excle表格，分享给大家。
+介绍根据豆瓣的标签分类，分成文学、流行、文化、生活、经管、科技六个大类。每个大类都整理成一个单独Excle文件，一个工作表保存一个标签里的全部书，按照书的评分从高到低排序。表格里保存的信息包括评分、评价人数、作者、出版社信息
+简介、豆瓣链接以及封面图文件名（封面图的合集也会在下面放出，有兴趣的可以下）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何解决MSYS2下的中文乱码问题">
-<meta property="og:url" content="http://yoursite.com/2015/12/24/How-To-Solve-Gibberish-Problem-Under-MSYS2/index.html">
+<meta property="og:title" content="豆瓣读书评分">
+<meta property="og:url" content="http://yoursite.com/2016/04/20/DoubanBookCrawler/index.html">
 <meta property="og:site_name" content="KC的小站">
-<meta property="og:description" content="MSYS2是什么
-MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于shell 命令行开发环境。 同时它也是一个在Cygwin （POSIX 兼容性层） 和MinGW-w64（从”MinGW-生成”）基础上产生的，追求更好的互操作性的Windows 软件。
-
-
-中文乱码问题在默认安装完后，会存在中文乱码的问题，通过下面提到的方法可以解决。
-1. 设置字符编码点">
-<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_How-To-Solve-Gibberish-Problem-Under-MSYS2_0.png-default">
-<meta property="og:updated_time" content="2016-03-20T03:25:25.229Z">
+<meta property="og:description" content="前言最近把豆瓣图书上热门标签的书爬了一遍，大概有五六万本，整理成了Excle表格，分享给大家。
+介绍根据豆瓣的标签分类，分成文学、流行、文化、生活、经管、科技六个大类。每个大类都整理成一个单独Excle文件，一个工作表保存一个标签里的全部书，按照书的评分从高到低排序。表格里保存的信息包括评分、评价人数、作者、出版社信息
+简介、豆瓣链接以及封面图文件名（封面图的合集也会在下面放出，有兴趣的可以下）">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban1.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban2.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban3.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban4.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban5.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban6.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban7.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban8.png-default">
+<meta property="og:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban9.png-default">
+<meta property="og:updated_time" content="2016-04-20T00:02:57.019Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何解决MSYS2下的中文乱码问题">
-<meta name="twitter:description" content="MSYS2是什么
-MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于shell 命令行开发环境。 同时它也是一个在Cygwin （POSIX 兼容性层） 和MinGW-w64（从”MinGW-生成”）基础上产生的，追求更好的互操作性的Windows 软件。
-
-
-中文乱码问题在默认安装完后，会存在中文乱码的问题，通过下面提到的方法可以解决。
-1. 设置字符编码点">
-<meta name="twitter:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_How-To-Solve-Gibberish-Problem-Under-MSYS2_0.png-default">
+<meta name="twitter:title" content="豆瓣读书评分">
+<meta name="twitter:description" content="前言最近把豆瓣图书上热门标签的书爬了一遍，大概有五六万本，整理成了Excle表格，分享给大家。
+介绍根据豆瓣的标签分类，分成文学、流行、文化、生活、经管、科技六个大类。每个大类都整理成一个单独Excle文件，一个工作表保存一个标签里的全部书，按照书的评分从高到低排序。表格里保存的信息包括评分、评价人数、作者、出版社信息
+简介、豆瓣链接以及封面图文件名（封面图的合集也会在下面放出，有兴趣的可以下）">
+<meta name="twitter:image" content="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban1.png-default">
 
 
 
@@ -101,7 +100,7 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
   };
 </script>
 
-  <title> 如何解决MSYS2下的中文乱码问题 | KC的小站 </title>
+  <title> 豆瓣读书评分 | KC的小站 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -229,7 +228,7 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
             
             
               
-                如何解决MSYS2下的中文乱码问题
+                豆瓣读书评分
               
             
           </h1>
@@ -241,8 +240,8 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-12-24T14:57:20+08:00" content="2015-12-24">
-              2015-12-24
+            <time itemprop="dateCreated" datetime="2016-04-20T07:47:43+08:00" content="2016-04-20">
+              2016-04-20
             </time>
           </span>
 
@@ -252,8 +251,8 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/24/How-To-Solve-Gibberish-Problem-Under-MSYS2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/24/How-To-Solve-Gibberish-Problem-Under-MSYS2/" itemprop="commentsCount"></span>
+                <a href="/2016/04/20/DoubanBookCrawler/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/20/DoubanBookCrawler/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -275,17 +274,10 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
       
 
       
-        <h1 id="MSYS2是什么"><a href="#MSYS2是什么" class="headerlink" title="MSYS2是什么"></a>MSYS2是什么</h1><blockquote>
-<p>MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于shell 命令行开发环境。 同时它也是一个在Cygwin （POSIX 兼容性层） 和MinGW-w64（从”MinGW-生成”）基础上产生的，追求更好的互操作性的Windows 软件。</p>
-</blockquote>
-<hr>
-<h1 id="中文乱码问题"><a href="#中文乱码问题" class="headerlink" title="中文乱码问题"></a>中文乱码问题</h1><p>在默认安装完后，会存在中文乱码的问题，通过下面提到的方法可以解决。</p>
-<h2 id="1-设置字符编码"><a href="#1-设置字符编码" class="headerlink" title="1. 设置字符编码"></a>1. 设置字符编码</h2><p>点击MSYS2窗口的左上角，打开Options，设置为UTF-8<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_How-To-Solve-Gibberish-Problem-Under-MSYS2_0.png-default" alt=""></p>
-<h2 id="2-处理运行Win上命令的乱码"><a href="#2-处理运行Win上命令的乱码" class="headerlink" title="2. 处理运行Win上命令的乱码"></a>2. 处理运行Win上命令的乱码</h2><p>这样设置后，运行Win的命令还是会出现乱码（比如ping，ipconfig等）</p>
-<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ ping google.com</span><br><span class="line"></span><br><span class="line">▒▒▒▒ Ping google.com [216.58.221.142] ▒▒▒▒ 32 ▒ֽڵ▒▒▒▒▒:</span><br><span class="line">▒▒▒▒ 216.58.221.142 ▒Ļظ▒: ▒ֽ▒=32 ʱ▒▒=9ms TTL=48</span><br><span class="line">▒▒▒▒ 216.58.221.142 ▒Ļظ▒: ▒ֽ▒=32 ʱ▒▒=10ms TTL=48</span><br><span class="line">▒▒▒▒ 216.58.221.142 ▒Ļظ▒: ▒ֽ▒=32 ʱ▒▒=10ms TTL=48</span><br><span class="line">▒▒▒▒ 216.58.221.142 ▒Ļظ▒: ▒ֽ▒=32 ʱ▒▒=9ms TTL=48</span><br><span class="line"></span><br><span class="line">216.58.221.142 ▒▒ Ping ͳ▒▒▒▒Ϣ:</span><br><span class="line">    ▒▒▒ݰ▒: ▒ѷ▒▒▒ = 4▒▒▒ѽ▒▒▒ = 4▒▒▒▒ʧ = 0 (0% ▒▒ʧ)▒▒</span><br><span class="line">▒▒▒▒▒г̵Ĺ▒▒▒ʱ▒▒(▒Ժ▒▒▒Ϊ▒▒λ):</span><br><span class="line">    ▒▒▒ = 9ms▒▒▒ = 10ms▒▒ƽ▒▒ = 9ms</span><br></pre></td></tr></table></figure>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>新建<strong>/usr/bin/win</strong>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="variable">$@</span> |iconv <span class="_">-f</span> gbk -t utf-8</span><br></pre></td></tr></table></figure></p>
-<p>新建<strong>/etc/profile.d/alias.sh</strong>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> ls=<span class="string">"/bin/ls --color=tty --show-control-chars"</span></span><br><span class="line"><span class="built_in">alias</span> grep=<span class="string">"/bin/grep --color"</span></span><br><span class="line"><span class="built_in">alias</span> ll=<span class="string">"/bin/ls --color=tty --show-control-chars -l"</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">alias</span> ping=<span class="string">"/bin/win ping"</span></span><br><span class="line"><span class="built_in">alias</span> netstat=<span class="string">"/bin/win netstat"</span></span><br><span class="line"><span class="built_in">alias</span> nslookup=<span class="string">"/bin/win nslookup"</span></span><br><span class="line"><span class="built_in">alias</span> ipconfig=<span class="string">"/bin/win ipconfig"</span></span><br></pre></td></tr></table></figure></p>
-<p>效果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ ping google.com</span><br><span class="line"></span><br><span class="line">正在 Ping google.com [216.58.221.46] 具有 32 字节的数据:</span><br><span class="line">来自 216.58.221.46 的回复: 字节=32 时间=8ms TTL=48</span><br><span class="line">来自 216.58.221.46 的回复: 字节=32 时间=9ms TTL=48</span><br><span class="line">来自 216.58.221.46 的回复: 字节=32 时间=9ms TTL=48</span><br><span class="line">来自 216.58.221.46 的回复: 字节=32 时间=9ms TTL=48</span><br><span class="line"></span><br><span class="line">216.58.221.46 的 Ping 统计信息:</span><br><span class="line">    数据包: 已发送 = 4，已接收 = 4，丢失 = 0 (0% 丢失)，</span><br><span class="line">往返行程的估计时间(以毫秒为单位):</span><br><span class="line">    最短 = 8ms，最长 = 9ms，平均 = 8ms</span><br></pre></td></tr></table></figure></p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近把豆瓣图书上热门标签的书爬了一遍，大概有五六万本，整理成了Excle表格，分享给大家。</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>根据<a href="https://book.douban.com/tag/?view=type&amp;icn=index-sorttags-all" target="_blank" rel="external">豆瓣的标签分类</a>，分成<strong>文学</strong>、<strong>流行</strong>、<strong>文化</strong>、<strong>生活</strong>、<strong>经管</strong>、<strong>科技</strong>六个大类。<br>每个大类都整理成一个单独Excle文件，一个工作表保存一个标签里的全部书，按照书的评分从高到低排序。<br>表格里保存的信息包括<strong>评分</strong>、<strong>评价人数</strong>、<strong>作者</strong>、<strong>出版社信息</strong><br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban1.png-default" alt=""></p>
+<p><strong>简介</strong>、<strong>豆瓣链接</strong>以及<strong>封面图文件名</strong>（封面图的合集也会在下面放出，有兴趣的可以下）<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban2.png-default" alt=""></p>
+<h1 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h1><p><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban3.png-default" alt=""><br><a href="www.skjc423.com/res/文学.xls">下载</a><br>●════════════════════●<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban4.png-default" alt=""><br><a href="www.skjc423.com/res/流行.xls">下载</a><br>●════════════════════●<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban5.png-default" alt=""><br><a href="www.skjc423.com/res/文化.xls">下载</a><br>●════════════════════●<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban6.png-default" alt=""><br><a href="www.skjc423.com/res/生活.xls">下载</a><br>●════════════════════●<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban7.png-default" alt=""><br><a href="www.skjc423.com/res/经管.xls">下载</a><br>●════════════════════●<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban8.png-default" alt=""><br><a href="www.skjc423.com/res/科技.xls">下载</a><br>●════════════════════●<br>封面图合集<br><img src="http://7xpfm0.com1.z0.glb.clouddn.com/blog_Douban9.png-default" alt=""><br><a href="www.skjc423.com/res/科技.xls">下载</a></p>
 
       
     </div>
@@ -303,17 +295,13 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/23/How-To-Use-QiNiu/" rel="next" title="如何使用七牛图床">
-                <i class="fa fa-chevron-left"></i> 如何使用七牛图床
+              <a href="/2016/03/20/ETC1-Introduce/" rel="next" title="ETC1纹理压缩原理">
+                <i class="fa fa-chevron-left"></i> ETC1纹理压缩原理
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/02/19/Hexo-Blog-How-To-Add-DuoShuo-Comment/" rel="prev" title="Hexo博客系列——如何添加评论功能">
-                Hexo博客系列——如何添加评论功能 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -339,8 +327,8 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/24/How-To-Solve-Gibberish-Problem-Under-MSYS2/"
-           data-title="如何解决MSYS2下的中文乱码问题" data-url="http://yoursite.com/2015/12/24/How-To-Solve-Gibberish-Problem-Under-MSYS2/">
+      <div class="ds-thread" data-thread-key="2016/04/20/DoubanBookCrawler/"
+           data-title="豆瓣读书评分" data-url="http://yoursite.com/2016/04/20/DoubanBookCrawler/">
       </div>
     
   </div>
@@ -422,7 +410,7 @@ MSYS2 （Minimal SYStem 2） 是一个MSYS的独立改写版本，主要用于sh
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MSYS2是什么"><span class="nav-number">1.</span> <span class="nav-text">MSYS2是什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中文乱码问题"><span class="nav-number">2.</span> <span class="nav-text">中文乱码问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-设置字符编码"><span class="nav-number">2.1.</span> <span class="nav-text">1. 设置字符编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-处理运行Win上命令的乱码"><span class="nav-number">2.2.</span> <span class="nav-text">2. 处理运行Win上命令的乱码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#现象"><span class="nav-number">2.2.1.</span> <span class="nav-text">现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.2.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下载地址"><span class="nav-number">3.</span> <span class="nav-text">下载地址</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
